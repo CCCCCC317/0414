@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>喵喵喵喵背景與選單</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #ffffff; /* 使用純白背景作為備用 */
+    }
+
+    iframe#backgroundIframe {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: -2; /* 確保背景位於最底層 */
+      transition: transform 0.2s ease; /* 添加平滑的跳動動畫 */
+    }
+
+    iframe#contentFrame {
+      position: absolute;
+      top: 100px; /* 避免遮擋選單 */
+      left: 0;
+      width: 100%;
+      height: calc(100% - 100px); /* 減去選單的高度 */
+      border: none;
+      z-index: 500; /* 確保內容 iframe 位於背景之上 */
+      display: none; /* 預設隱藏內容 iframe */
+    }
+
+    /* 選單容器樣式 */
+    .menu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 50px;
+      z-index: 1000;
+    }
+
+    .menu li {
+      background-color: #ffcad4;
+      color: #6b0504;
+      font-size: 30px;
+      padding: 10px 15px;
+      border-radius: 15px;
+      border: 2px solid #ffd6ff;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .submenu {
+      display: none;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1001;
+    }
+
+    .submenu li {
+      background-color: #ffcad4;
+      color: #6b0504;
+      font-size: 20px;
+      padding: 10px 15px;
+      margin: 5px 0;
+      border-radius: 10px;
+      border: 2px solid #ffd6ff;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .menu li:hover {
+      background-color: #fcf6bd;
+      color: #4f4f4f;
+      border-color: #d0f4de;
+    }
+
+    .submenu li:hover {
+      background-color: #fcf6bd;
+      color: #4f4f4f;
+      border-color: #d0f4de;
+    }
+
+    .menu li:hover .submenu {
+      display: block;
+    }
+
+    /* 自我介紹的愛心框框樣式 */
+    .intro-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px; /* 增加寬度 */
+      height: 400px; /* 增加高度 */
+      background-color: rgba(255, 192, 203, 0.8); /* 粉紅色背景 */
+      clip-path: path("M200 0 C 270 -70, 400 70, 200 400 C 0 70, 130 -70, 200 0 Z"); /* 調整愛心形狀 */
+      display: none;
+      z-index: 600;
+      padding: 30px; /* 增加內邊距 */
+      font-size: 20px; /* 增加字體大小 */
+      color: #2f3e46;
+      text-align: center;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- 背景 iframe -->
+  <iframe 
+    id="backgroundIframe"
+    src="https://openprocessing.org/sketch/2099068/embed/" 
+    frameborder="0" 
+    sandbox="allow-scripts allow-same-origin allow-forms">
+  </iframe>
+
+  <!-- 選單 -->
+  <ul class="menu">
+    <li onclick="hideContent()">首頁</li>
+    <li onclick="showIntro()">自我介紹</li>
+    <li>
+      作品集
+      <ul class="submenu">
+        <li onclick="loadPage('https://cccccc317.github.io/20250303/')">第一周作業</li>
+        <li onclick="loadPage('https://cccccc317.github.io/20250310/')">第二周作業</li>
+        <li onclick="loadPage('https://cccccc317.github.io/202503171/')">第三周作業</li>
+        <li onclick="loadPage('https://cccccc317.github.io/20250324/')">第四周作業</li>
+      </ul>
+    </li>
+    <li onclick="loadPage('https://cccccc317.github.io/20250310/')">測驗卷</li>
+    <li onclick="loadPage('https://cfchen58.synology.me/%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%882024/B2/week1/20250217_092821.mp4')">教學影片</li>
+  </ul>
+
+  <!-- 內容 iframe -->
+  <iframe id="contentFrame" src="" allowtransparency="true"></iframe>
+
+  <!-- 自我介紹的愛心框框 -->
+  <div id="introBox" class="intro-box">
+    哈囉老師咪咪
+  </div>
+
+  <script>
+    // 重新加載背景 iframe
+    window.onload = function() {
+      const iframe = document.getElementById('backgroundIframe');
+      iframe.src = iframe.src; // 重新加載背景 iframe
+    };
+
+    // 加載內容到內容 iframe
+    function loadPage(url) {
+      const contentFrame = document.getElementById('contentFrame');
+      const introBox = document.getElementById('introBox');
+      contentFrame.style.display = 'block'; // 顯示內容 iframe
+      contentFrame.src = url; // 加載指定的 URL
+      introBox.style.display = 'none'; // 隱藏自我介紹區塊
+    }
+
+    // 隱藏內容 iframe
+    function hideContent() {
+      const contentFrame = document.getElementById('contentFrame');
+      const introBox = document.getElementById('introBox');
+      contentFrame.style.display = 'none'; // 隱藏內容 iframe
+      contentFrame.src = ''; // 清空內容 iframe 的內容
+      introBox.style.display = 'none'; // 隱藏自我介紹區塊
+    }
+
+    // 顯示自我介紹區塊
+    function showIntro() {
+      const contentFrame = document.getElementById('contentFrame');
+      const introBox = document.getElementById('introBox');
+      contentFrame.style.display = 'none'; // 隱藏內容 iframe
+      introBox.style.display = 'block'; // 顯示自我介紹區塊
+    }
+
+    // 讓背景 iframe 跳動
+    document.body.addEventListener('click', function() {
+      const iframe = document.getElementById('backgroundIframe');
+      iframe.style.transform = 'translateY(-20px)'; // 向上跳動
+      setTimeout(() => {
+        iframe.style.transform = 'translateY(0)'; // 回到原位
+      }, 200); // 200 毫秒後回到原位
+    });
+  </script>
+</body>
+</html>
